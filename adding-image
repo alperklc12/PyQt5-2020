@@ -1,0 +1,31 @@
+import sys
+from PyQt5.QtWidgets import (QApplication, QWidget, QLabel, QPushButton, QLineEdit,
+                             QCheckBox)
+from PyQt5.QtGui import (QFont, QPixmap)
+
+font = QFont('Verdana', 10)
+
+
+class Window(QWidget):
+    def __init__(self):
+        super().__init__()
+
+        self.setWindowTitle('Add Images')
+        self.setGeometry(150, 100, 600, 600)
+        self.interface_gui_fn()
+        self.show()
+
+    def interface_gui_fn(self):
+        self.lbl = QLabel('Welcome Python', self)
+        self.lbl.move(200, 200)
+        self.lbl.setFont(font)
+
+        self.img_lbl = QLabel(self)
+        self.img_lbl.setPixmap(QPixmap('user.png'))
+        self.img_lbl.move(250, 100)
+
+
+if __name__ == '__main__':
+    app_gui = QApplication(sys.argv)
+    window = Window()
+    sys.exit(app_gui.exec())
