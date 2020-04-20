@@ -1,0 +1,38 @@
+import sys
+from PyQt5.QtWidgets import (QApplication, QWidget, QLabel, QPushButton)
+from PyQt5.QtGui import QFont
+
+font = QFont('Verdana', 14)
+
+
+class Window(QWidget):
+    def __init__(self):
+        super().__init__()
+
+        self.setWindowTitle('Buttons')
+        self.setGeometry(150, 100, 500, 500)
+        self.interface_gui_fn()
+
+    def interface_gui_fn(self):
+        self.lbl1 = QLabel('Welcome Python', self)
+        self.lbl1.resize(300, 40)
+        self.lbl1.move(110, 50)
+        self.lbl1.setFont(font)
+
+        self.btn = QPushButton('Enter', self)
+        self.btn.move(170, 100)
+        self.btn.setFont(font)
+        self.btn.clicked.connect(self.btn_fn)
+
+
+        self.show()
+
+
+    def btn_fn(self):
+        self.lbl1.setText('Btn Clicked Succes!')
+
+
+if __name__ == '__main__':
+    app_gui = QApplication(sys.argv)
+    window = Window()
+    sys.exit(app_gui.exec())
