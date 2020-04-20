@@ -1,0 +1,21 @@
+import sys
+from PyQt5.QtWidgets import (QApplication, QWidget, QLabel)
+
+
+class Window(QWidget):
+    def __init__(self):
+        super().__init__()
+
+        self.setWindowTitle('PyQt5')
+        self.setGeometry(150, 150, 500, 500)
+        self.interface_fn()
+
+    def interface_fn(self):
+        self.header = QLabel('Welcome', self)
+        self.show()
+
+
+if __name__ == '__main__':
+    win_app = QApplication(sys.argv)
+    window = Window()
+    sys.exit(win_app.exec())
