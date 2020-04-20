@@ -1,0 +1,38 @@
+import sys
+from PyQt5.QtWidgets import (QApplication, QWidget, QLabel, QPushButton, QLineEdit,
+                             QCheckBox, QMessageBox)
+from PyQt5.QtGui import (QFont, QPixmap)
+from PyQt5.QtCore import Qt
+
+font = QFont('Verdana', 10)
+
+
+class Window(QWidget):
+    def __init__(self):
+        super().__init__()
+
+        self.setWindowTitle('MessageBox')
+        self.setGeometry(150, 100, 500, 500)
+        self.interface_gui_fn()
+        self.show()
+
+    def interface_gui_fn(self):
+        self.btn = QPushButton('Exit', self)
+        self.btn.setFont(font)
+        self.btn.move(180, 150)
+        self.btn.clicked.connect(self.btn_fn)
+
+    def btn_fn(self):
+        message_box = QMessageBox.question(self, 'Attention!!!', 'Are you sure?',
+                                           QMessageBox.Yes | QMessageBox.No, QMessageBox.No)
+
+        if message_box == QMessageBox.Yes:
+            sys.exit()
+        else:
+            print('Failed to log out!!!')
+
+
+if __name__ == '__main__':
+    app_gui = QApplication(sys.argv)
+    window = Window()
+    sys.exit(app_gui.exec())
