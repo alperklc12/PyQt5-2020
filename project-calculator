@@ -1,0 +1,144 @@
+import sys
+from PyQt5.QtWidgets import (QApplication, QWidget, QLabel, QPushButton, QLineEdit,
+                             QCheckBox, QMessageBox, QComboBox, QTextEdit, QMainWindow,
+                             QStatusBar)
+from PyQt5.QtGui import (QFont, QPixmap, QIcon)
+from PyQt5.QtCore import Qt
+
+rusalt = 0
+rusalt_lst = []
+
+
+class Window(QMainWindow):
+    def __init__(self):
+        super().__init__()
+
+        self.setWindowTitle('Calculator')
+        self.setGeometry(600, 250, 380, 550)
+        self.setFixedSize(self.size())
+        self.interface_gui_fn()
+        self.show()
+
+    def interface_gui_fn(self):
+        self.entry_line = QLineEdit(self)
+        self.entry_line.setAlignment(Qt.AlignRight)
+        self.entry_line.setStyleSheet('font: 14pt Arial Bold;'
+                                      'border: 2px solid gray;'
+                                      'border-radius: 5px;'
+                                      'background-color: #e6e6fa')
+        self.entry_line.resize(335, 40)
+        self.entry_line.move(20, 30)
+        self.entry_line.setText('O')
+
+        self.stat_bar = QStatusBar()
+        self.setStatusBar(self.stat_bar)
+
+        btn_numbers = []
+
+        for i in range(1, 10):
+            btn_nums = QPushButton(str(i), self)
+            btn_nums.setFont(QFont('Arial', 15))
+            btn_nums.setStyleSheet('background-color: white; '
+                                   'border: 2px solid gray; '
+                                   'border-radius: 5px')
+            btn_nums.resize(70, 40)
+            btn_nums.clicked.connect(self.numbers_fn)
+            btn_numbers.append(btn_nums)
+
+        btn_nums_idx = 0
+        for i in range(0, 3):
+            for j in range(0, 3):
+                btn_numbers[btn_nums_idx].move(20 + j * 90, 80 + i * 70)
+                btn_nums_idx += 1
+
+        btn_operators = []
+
+        for item in '+-/*':
+            btn_op = QPushButton(item, self)
+            btn_op.setFont(QFont('Arial', 15))
+            btn_op.setStyleSheet('background-color: white; '
+                                 'border: 2px solid gray; '
+                                 'border-radius: 5px')
+            btn_op.resize(70, 40)
+            btn_op.clicked.connect(self.operators_fn)
+            btn_operators.append(btn_op)
+
+        for i in range(4):
+            btn_operators[i].move(285, 80 + i * 70)
+
+        btn_zero = QPushButton('0', self)
+        btn_zero.setFont(QFont('Arial', 15))
+        btn_zero.resize(250, 40)
+        btn_zero.move(20, 290)
+        btn_zero.setStyleSheet('background-color: white;'
+                               'border: 2px solid gray; '
+                               'border-radius: 5px')
+        btn_zero.clicked.connect(self.numbers_fn)
+
+        btn_othr_operators = []
+
+        for item in 'C.=':
+            btn_othr_op = QPushButton(item, self)
+            btn_othr_op.setFont(QFont('Arial', 15))
+            btn_othr_op.setStyleSheet('background-color: white; '
+                                      'border: 2px solid gray; '
+                                      'border-radius: 5px')
+            btn_othr_op.resize(70, 40)
+            btn_othr_op.clicked.connect(self.other_operators_fn)
+            btn_othr_operators.append(btn_othr_op)
+
+        for k in range(3):
+            btn_othr_operators[k].move(20 + k * 90, 360)
+
+        btn_delete = QPushButton(self)
+        btn_delete.setIcon(QIcon(QPixmap('arrow.png')))
+        btn_delete.setFont(QFont('Arial', 15))
+        btn_delete.resize(70, 40)
+        btn_delete.move(290, 360)
+        btn_delete.setStyleSheet('background-color: white;'
+                                 'border: 2px solid gray; '
+                                 'border-radius: 5px')
+        btn_delete.clicked.connect(self.delete_fn)
+
+    def numbers_fn(self):
+        btn_text = self.sender().text()
+        if self.entry_line.text() == 'O':
+            self.entry_line.setText(btn_text)
+        else:
+            self.entry_line.setText(self.entry_line.text() + btn_text)
+
+    def operators_fn(self):
+        btn_text = self.sender().text()
+        if self.entry_line.text() != 'O':
+            self.entry_line.setText(self.entry_line.text() + btn_text)
+
+    def other_operators_fn(self):
+        btn_text = self.sender().text()
+        if btn_text == 'C':
+            self.entry_line.setText('O')
+        elif btn_text == '.':
+            self.entry_line.setText(self.entry_line.text() + btn_text)
+        elif btn_text == '=':
+            content = self.entry_line.text()
+            rusalt = eval(content)
+            self.entry_line.setText(str(rusalt))
+            rusalt_lst.append(content)
+            rusalt_lst.reverse()
+            self.stat_bar.showMessage('History: ' + ' | '.join(rusalt_lst[:3]))
+
+    def delete_fn(self):
+        text = self.entry_line.text()
+        n_text = text[:-1]
+        self.entry_line.setText(n_text)
+        if len(text) == 0:
+            self.entry_line.setText('O')
+
+
+def main():
+    app_gui = QApplication(sys.argv)
+    window = Window()
+    sys.exit(app_gui.exec())
+
+
+if __name__ == '__main__':
+    main()
