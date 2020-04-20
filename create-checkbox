@@ -1,0 +1,48 @@
+import sys
+from PyQt5.QtWidgets import (QApplication, QWidget, QLabel, QPushButton, QLineEdit,
+                             QCheckBox)
+from PyQt5.QtGui import QFont
+
+font = QFont('Verdana', 10)
+
+
+class Window(QWidget):
+    def __init__(self):
+        super().__init__()
+
+        self.setWindowTitle('CheckBox')
+        self.setGeometry(150, 100, 500, 500)
+        self.interface_gui_fn()
+        self.show()
+
+    def interface_gui_fn(self):
+        self.line1 = QLineEdit(self)
+        self.line1.setPlaceholderText('First Name')
+        self.line1.move(40, 40)
+
+        self.line2 = QLineEdit(self)
+        self.line2.setPlaceholderText('Last Name')
+        self.line2.move(40, 80)
+
+        self.btn = QPushButton('Save', self)
+        self.btn.move(40, 200)
+
+        self.male_box = QCheckBox('Male', self)
+        self.male_box.move(40, 130)
+        self.male_box.toggled.connect(self.togle_fn)
+
+        self.female_box = QCheckBox('Female', self)
+        self.female_box.move(130, 130)
+        self.female_box.toggled.connect(self.togle_fn)
+
+    def togle_fn(self):
+        if self.male_box.isChecked():
+            print('male')
+        if self.female_box.isChecked():
+            print('female')
+
+
+if __name__ == '__main__':
+    app_gui = QApplication(sys.argv)
+    window = Window()
+    sys.exit(app_gui.exec())
