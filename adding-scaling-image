@@ -2,6 +2,7 @@ import sys
 from PyQt5.QtWidgets import (QApplication, QWidget, QLabel, QPushButton, QLineEdit,
                              QCheckBox)
 from PyQt5.QtGui import (QFont, QPixmap)
+from PyQt5.QtCore import Qt
 
 font = QFont('Verdana', 10)
 
@@ -20,8 +21,10 @@ class Window(QWidget):
         self.lbl.move(200, 200)
         self.lbl.setFont(font)
 
+        pixmap = QPixmap('user.png')
+        big_img = pixmap.scaled(100, 100, Qt.KeepAspectRatio)
         self.img_lbl = QLabel(self)
-        self.img_lbl.setPixmap(QPixmap('user.png'))
+        self.img_lbl.setPixmap(pixmap)
         self.img_lbl.move(250, 100)
 
 
