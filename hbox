@@ -1,0 +1,35 @@
+import sys
+from PyQt5.QtWidgets import (QApplication, QWidget, QPushButton,
+                             QHBoxLayout, QVBoxLayout)
+
+
+class Window(QWidget):
+    def __init__(self):
+        super().__init__()
+        self.setWindowTitle('Test')
+        self.setGeometry(100, 100, 500, 500)
+        self.interface_gui()
+        self.show()
+
+    def interface_gui(self):
+        hbox = QHBoxLayout()
+
+        hbox.addStretch()
+        btn1 = QPushButton('btn1')
+        hbox.addWidget(btn1)
+
+        btn2 = QPushButton('btn1')
+        hbox.addWidget(btn2)
+        hbox.addStretch()
+
+        self.setLayout(hbox)
+
+
+def main():
+    app_gui = QApplication(sys.argv)
+    window = Window()
+    sys.exit(app_gui.exec())
+
+
+if __name__ == '__main__':
+    main()
