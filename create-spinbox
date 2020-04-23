@@ -1,0 +1,37 @@
+import sys
+from PyQt5.QtWidgets import (QApplication, QWidget, QPushButton,
+                             QHBoxLayout, QVBoxLayout, QSpinBox)
+from PyQt5.QtGui import QFont
+
+
+class Window(QWidget):
+    def __init__(self):
+        super().__init__()
+        self.setWindowTitle('Test')
+        self.setGeometry(100, 100, 500, 500)
+        self.interface_gui()
+        self.show()
+
+    def interface_gui(self):
+        self.sbox = QSpinBox(self)
+        self.sbox.move(100, 200)
+        self.sbox.setFont(QFont('Arial', 15))
+        self.sbox.setRange(-10, 10)
+        self.sbox.setSingleStep(2)
+        self.sbox.setPrefix('$ ')
+        self.sbox.setSuffix(' cm')
+        self.sbox.valueChanged.connect(self.sbox_fn)
+
+    def sbox_fn(self):
+        data = self.sbox.value()
+        print(data)
+
+
+def main():
+    app_gui = QApplication(sys.argv)
+    window = Window()
+    sys.exit(app_gui.exec())
+
+
+if __name__ == '__main__':
+    main()
