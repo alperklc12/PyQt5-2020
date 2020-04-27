@@ -1,0 +1,90 @@
+import sys
+from PyQt5.QtWidgets import (QWidget, QApplication, QTextEdit, QPushButton, QFileDialog,
+                             QMessageBox)
+
+url_file = ''
+text_changed = False
+
+
+class Window(QWidget):
+    def __init__(self):
+        super().__init__()
+        self.setGeometry(50, 50, 400, 400)
+        self.interface_gui()
+        self.show()
+
+    def interface_gui(self):
+        self.editor = QTextEdit(self)
+        self.editor.move(10, 10)
+        self.editor.textChanged.connect(self.text_change_fn)
+
+        new_btn = QPushButton('new', self)
+        new_btn.move(150, 220)
+        new_btn.clicked.connect(self.new_fn)
+
+        open_btn = QPushButton('open', self)
+        open_btn.move(10, 220)
+        open_btn.clicked.connect(self.open_fn)
+
+        exit_btn = QPushButton('save', self)
+        exit_btn.move(10, 260)
+        exit_btn.clicked.connect(self.save_fn)
+
+        save_btn = QPushButton('exit', self)
+        save_btn.move(10, 300)
+        save_btn.clicked.connect(self.exit_fn)
+
+    def text_change_fn(self):
+        global text_changed
+        text_changed = True
+
+    def new_fn(self):
+        global url_file
+        url_file = ''
+        self.editor.clear()
+
+    def exit_fn(self):
+        global text_changed
+        text_a = self.editor.toPlainText()
+        if text_a == '' or text_changed:
+            choice = QMessageBox.question(self, 'Exit', 'Are you sure',
+                                          QMessageBox.Yes | QMessageBox.No,
+                                          QMessageBox.No)
+            if choice == QMessageBox.Yes:
+                ui_app.quit()
+
+    def open_fn(self):
+        try:
+            url = QFileDialog.getOpenFileName(self, 'Open', '', 'All Files(*);;Txt Files(*.txt)')
+            with open(url[0], 'r', encoding='utf-8') as file:
+                content = file.read()
+                self.editor.clear()
+                self.editor.setText(content)
+        except:
+            pass
+
+    def save_fn(self):
+        global url_file
+        try:
+            if text_changed:
+                if url_file == '':
+                    url = QFileDialog.getSaveFileName(self, 'Save', '', 'Txt Files(*txt)')
+                    url_file = url[0]
+                    content = self.editor.toPlainText()
+                    with open(url[0], 'w', encoding='utf-8') as file:
+                        file.write(content)
+                else:
+                    content = self.editor.toPlainText()
+                    with open(url_file, 'w', encoding='utf-8') as file:
+                        file.write(content)
+                    QMessageBox.information(self, 'Success', 'File Saved')
+            else:
+                QMessageBox.information(self, 'Attantion!!!', 'Nothing chaned')
+
+        except:
+            pass
+
+
+ui_app = QApplication(sys.argv)
+window = Window()
+sys.exit(ui_app.exec())
