@@ -1,0 +1,42 @@
+import sys
+from PyQt5.QtWidgets import (QApplication, QMainWindow, QPushButton, QLineEdit, QLabel)
+from PyQt5.QtGui import QIcon
+
+
+class WindowCls(QMainWindow):
+    def __init__(self):
+        super(WindowCls, self).__init__()
+        self.setWindowTitle("App")
+        self.setGeometry(100, 100, 500, 500)
+        self.setWindowIcon(QIcon("dir2_icon.png"))
+        self.init_ui_fn()
+
+    def init_ui_fn(self):
+        lbl_name = QLabel("Name: ", self)
+        lbl_name.move(30, 50)
+        self.txt_name = QLineEdit(self)
+        self.txt_name.setPlaceholderText("Name")
+        self.txt_name.move(120, 50)
+
+        lbl_surname = QLabel("Surname: ", self)
+        lbl_surname.move(30, 90)
+        self.txt_surname = QLineEdit(self)
+        self.txt_surname.setPlaceholderText("Surname")
+        self.txt_surname.move(120, 90)
+
+        self.btn_save = QPushButton("Save", self)
+        self.btn_save.move(120, 130)
+        self.btn_save.clicked.connect(self.btn_save_fn)
+
+    def btn_save_fn(self):
+        print(self.txt_name.text() + " " + self.txt_surname.text())
+
+def run():
+    app = QApplication(sys.argv)
+    window = WindowCls()
+    window.show()
+    sys.exit(app.exec())
+
+
+if __name__ == "__main__":
+    run()
