@@ -1,0 +1,65 @@
+import sys
+from PyQt5.QtWidgets import (QApplication, QMainWindow, QLabel, QLineEdit, QPushButton)
+from PyQt5.QtGui import QIcon
+
+
+class WindowCls(QMainWindow):
+    def __init__(self):
+        super(WindowCls, self).__init__()
+        self.setWindowTitle("Calculator")
+        self.setGeometry(200, 200, 500, 500)
+        self.init_ui_fn()
+
+    def init_ui_fn(self):
+        lbl_num1 = QLabel("Number 1: ", self)
+        lbl_num1.move(50, 30)
+        self.txt_num1 = QLineEdit(self)
+        self.txt_num1.move(150, 30)
+        self.txt_num1.resize(200, 30)
+
+        lbl_num2 = QLabel("Number 2: ", self)
+        lbl_num2.move(50, 70)
+        self.txt_num2 = QLineEdit(self)
+        self.txt_num2.move(150, 70)
+        self.txt_num2.resize(200, 30)
+
+        self.btn_sum = QPushButton("Sum", self)
+        self.btn_sum.move(190, 110)
+        self.btn_sum.clicked.connect(self.calculate_fn)
+
+        self.btn_mult = QPushButton("Mult", self)
+        self.btn_mult.move(190, 150)
+        self.btn_mult.clicked.connect(self.calculate_fn)
+
+        self.lbl_rusalt = QLabel("Rusalt: ", self)
+        self.lbl_rusalt.move(50, 190)
+
+    def calculate_fn(self):
+        sender = self.sender().text()
+        rusalt = 0
+
+        if sender == "Sum":
+            rusalt = int(self.txt_num1.text()) + int(self.txt_num2.text())
+            self.lbl_rusalt.setText("Result: " + str(rusalt))
+        elif sender == "Mult":
+            rusalt = int(self.txt_num1.text()) * int(self.txt_num2.text())
+            self.lbl_rusalt.setText("Result: " + str(rusalt))
+
+    def sum_fn(self):
+        rusalt = int(self.txt_num1.text()) + int(self.txt_num2.text())
+        self.lbl_rusalt.setText("Result: " + str(rusalt))
+
+    def mult_fn(self):
+        rusalt = int(self.txt_num1.text()) * int(self.txt_num2.text())
+        self.lbl_rusalt.setText("Result: " + str(rusalt))
+
+
+def run():
+    app = QApplication(sys.argv)
+    window = WindowCls()
+    window.show()
+    sys.exit(app.exec())
+
+
+if __name__ == "__main__":
+    run()
